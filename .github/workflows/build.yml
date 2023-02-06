@@ -49,6 +49,3 @@ jobs:
             ghcr.io/leet4tari/gh-pilot:1.0.0
             quay.io/leet4tari/gh-pilot:latest
             quay.io/leet4tari/gh-pilot:1.0.0
-
-            # user/app:latest
-            # user/app:1.0.0
