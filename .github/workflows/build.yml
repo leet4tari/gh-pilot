@@ -13,6 +13,7 @@ name: Build docker image
 
 env:
   QREGISTRY: quay.io
+  QREPOSITORY: leet4tari
   QIMAGE_NAME: gh-pilot
 
 concurrency:
@@ -59,7 +60,7 @@ jobs:
           images: |
             #name/${{ env.QIMAGE_NAME }}
             ghcr.io/${{ github.repository }}
-            ${{ env.QREGISTRY }}/${{ secrets.QDOCKER_USERNAME }}/${{ env.QIMAGE_NAME }}
+            ${{ env.QREGISTRY }}/${{ env.QREPOSITORY }}/${{ env.QIMAGE_NAME }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
