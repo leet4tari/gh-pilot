@@ -11,6 +11,10 @@ name: Build docker image
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]*'
 
+env:
+  QREGISTRY: quay.io
+  QIMAGE_NAME: gh-pilot
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -37,14 +41,14 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          #username: ${{ github.repository_owner }}
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
+          #username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Login to Quay.io
+      - name: Login to ${{ env.QREGISTRY }}
         uses: docker/login-action@v2
         with:
-          registry: quay.io
+          registry: ${{ env.QREGISTRY }}
           username: ${{ secrets.QDOCKER_USERNAME }}
           password: ${{ secrets.QDOCKER_TOKEN }}
 
@@ -53,9 +57,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            #name/gh-pilot
+            #name/${{ env.QIMAGE_NAME }}
             ghcr.io/${{ github.repository }}
-            quay.io/leet4tari/gh-pilot
+            ${{ env.QREGISTRY }}/${{ secrets.QDOCKER_USERNAME }}/${{ env.QIMAGE_NAME }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
