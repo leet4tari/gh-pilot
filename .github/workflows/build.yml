@@ -53,7 +53,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            name/gh-pilot
+            #name/gh-pilot
             ghcr.io/${{ github.repository }}
             quay.io/leet4tari/gh-pilot
           tags: |
