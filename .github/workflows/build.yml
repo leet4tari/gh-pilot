@@ -24,9 +24,9 @@ jobs:
   docker_build:
     runs-on: ubuntu-latest
 
-#    permissions:
-#      packages: write
-#      contents: read
+    permissions:
+      packages: write
+      contents: read
 
     steps:
       - name: Checkout
