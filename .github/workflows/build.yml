@@ -58,9 +58,11 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
+            name/${{ env.QIMAGE_NAME }}
             ghcr.io/${{ github.repository }}
             ${{ env.QREGISTRY }}/${{ env.QREPOSITORY }}/${{ env.QIMAGE_NAME }}
           tags: |
+            type=schedule
             type=ref,event=branch
             type=ref,event=pr
             type=semver,pattern={{version}}
