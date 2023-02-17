@@ -12,9 +12,9 @@ name: Build docker image
       - 'v[0-9]+.[0-9]+.[0-9]*'
 
 env:
-  QREGISTRY: quay.io
-  QREPOSITORY: leet4tari
-  QIMAGE_NAME: gh-pilot
+  SREGISTRY: quay.io
+  SREPOSITORY: tarilabs
+  SIMAGE_NAME: gh-pilot
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -44,8 +44,8 @@ jobs:
         with:
           images: |
             ghcr.io/${{ github.repository }}
-            ${{ env.QREGISTRY }}/${{ env.QREPOSITORY }}/${{ env.QIMAGE_NAME }}
-            # name/${{ env.QIMAGE_NAME }}
+            ${{ env.SREGISTRY }}/${{ env.SREPOSITORY }}/${{ env.SIMAGE_NAME }}
+            # name/${{ env.SIMAGE_NAME }}
           flavor: latest=true
           tags: |
             type=schedule
@@ -63,12 +63,12 @@ jobs:
           #username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Login to ${{ env.QREGISTRY }}
+      - name: Login to ${{ env.SREGISTRY }}
         uses: docker/login-action@v2
         with:
-          registry: ${{ env.QREGISTRY }}
-          username: ${{ secrets.QDOCKER_USERNAME }}
-          password: ${{ secrets.QDOCKER_TOKEN }}
+          registry: ${{ env.SREGISTRY }}
+          username: ${{ secrets.SDOCKER_USERNAME }}
+          password: ${{ secrets.SDOCKER_TOKEN }}
 
       - name: Build and push
         uses: docker/build-push-action@v4
