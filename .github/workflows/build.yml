@@ -46,6 +46,7 @@ jobs:
             ghcr.io/${{ github.repository }}
             ${{ env.QREGISTRY }}/${{ env.QREPOSITORY }}/${{ env.QIMAGE_NAME }}
             # name/${{ env.QIMAGE_NAME }}
+          flavor: latest=true
           tags: |
             type=schedule
             type=ref,event=branch
@@ -74,6 +75,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          file: Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           #cache-from: type=gha
