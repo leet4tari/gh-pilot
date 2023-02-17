@@ -70,7 +70,6 @@ jobs:
           username: ${{ secrets.QDOCKER_USERNAME }}
           password: ${{ secrets.QDOCKER_TOKEN }}
 
-
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
@@ -78,7 +77,8 @@ jobs:
           file: Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          #cache-from: type=gha
-          #cache-to: type=gha,mode=max
+          provenance: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
