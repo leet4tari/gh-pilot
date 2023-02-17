@@ -22,6 +22,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            name/gh-pilot
+            ghcr.io/leet4tari/gh-pilot
+            quay.io/leet4tari/gh-pilot
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -51,8 +66,5 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: |
-            ghcr.io/leet4tari/gh-pilot:latest
-            ghcr.io/leet4tari/gh-pilot:v0.1.0
-            quay.io/leet4tari/gh-pilot:latest
-            quay.io/leet4tari/gh-pilot:v0.1.0
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
