@@ -37,12 +37,16 @@ ARG VERSION
 ENV dockerfile_version=$VERSION
 ENV dockerfile_build_arch=$BUILDPLATFORM
 
-RUN groupadd --gid 1000 gh-pilot && \
+RUN groupadd --gid 10001 gh-pilot && \
     useradd --create-home --no-log-init \
-      --uid 1000 --gid 1000 gh-pilot
+      --uid 10000 --gid 10001 gh-pilot
+
+USER gh-pilot:gh-pilot
 
 COPY --from=builder /tmp/gh-pilot/ghp-server /usr/local/bin/ghp-server
-COPY --from=builder /tmp/gh-pilot/ghp /usr/local/bin/ghp-client
+COPY --from=builder /tmp/gh-pilot/ghp /usr/local/bin/ghp-cli
+
+EXPOSE 8330
 
 ENTRYPOINT [ "ghp-server" ]
 #CMD [ "--non-interactive-mode" ]
