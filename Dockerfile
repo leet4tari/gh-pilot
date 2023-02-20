@@ -1,7 +1,8 @@
 # syntax = docker/dockerfile:1.3
 
 ARG RUST_VERSION=1.66
-# rust source compile with cross platform build support
+
+# rust source compile
 FROM --platform=$BUILDPLATFORM rust:$RUST_VERSION-bullseye as builder
 
 ARG BUILDPLATFORM

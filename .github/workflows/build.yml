@@ -74,7 +74,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: Dockerfile
+          file: Dockerfile.dual
           platforms: linux/amd64,linux/arm64
           push: true
           provenance: false
