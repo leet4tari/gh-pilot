@@ -14,12 +14,15 @@ ARG TARGETOS
 ARG TARGETARCH
 ARG TARGETVARIANT
 ARG RUST_TOOLCHAIN
-ARG VERSION=0.0.1
+ARG VERSION=0.1.0
 ARG CARGO_FLAGS="--release --locked"
 
 COPY . .
 
-RUN cargo build $CARGO_FLAGS
+RUN cargo build $CARGO_FLAGS && \
+    # Copy executable out of the cache so it is available in the runtime image.
+    mkdir -p /tmp/gh-pilot && \
+    find target -type f \( -name "ghp-server" -o -name "ghp" \) -exec cp -v {} /tmp/gh-pilot/ \;
 
 # Create runtime base minimal image for the target platform executables
 FROM --platform=$TARGETPLATFORM bitnami/minideb:bullseye as runtime
@@ -31,8 +34,15 @@ ARG TARGETVARIANT
 
 ARG VERSION
 
-COPY --from=builder target/release/ghp /usr/local/bin/
-COPY --from=builder target/release/ghp-server /usr/local/bin/
+ENV dockerfile_version=$VERSION
+ENV dockerfile_build_arch=$BUILDPLATFORM
+
+RUN groupadd --gid 1000 gh-pilot && \
+    useradd --create-home --no-log-init \
+      --uid 1000 --gid 1000 gh-pilot
+
+COPY --from=builder /tmp/gh-pilot/ghp /usr/local/bin/ghp-client
+COPY --from=builder /tmp/gh-pilot/ghp-server /usr/local/bin/ghp-server
 
 ENTRYPOINT [ "ghp-server" ]
 #CMD [ "--non-interactive-mode" ]
