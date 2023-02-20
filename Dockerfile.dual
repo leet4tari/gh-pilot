@@ -48,7 +48,7 @@ RUN if [ "${TARGETARCH}" = "arm64" ] && [ "${BUILDARCH}" != "${TARGETARCH}" ] ; 
     cargo build ${RUST_TARGET} ${CARGO_FLAGS} && \
     # Copy executable out of the cache so it is available in the runtime image.
     mkdir -p /tmp/gh-pilot && \
-    find target -type f \( -name "ghp" -o -name "ghp-server" \) -exec cp -v {} /tmp/gh-pilot/ \;
+    find target -type f \( -name "ghp-server" -o -name "ghp" \) -exec cp -v {} /tmp/gh-pilot/ \;
 
 # Create runtime base minimal image for the target platform executables
 FROM --platform=$TARGETPLATFORM bitnami/minideb:bullseye as runtime
@@ -67,8 +67,8 @@ RUN groupadd --gid 1000 gh-pilot && \
     useradd --create-home --no-log-init \
       --uid 1000 --gid 1000 gh-pilot
 
-COPY --from=builder /tmp/gh-pilot/ghp /usr/local/bin/ghp-client
 COPY --from=builder /tmp/gh-pilot/ghp-server /usr/local/bin/ghp-server
+COPY --from=builder /tmp/gh-pilot/ghp /usr/local/bin/ghp-client
 
 ENTRYPOINT [ "ghp-server" ]
 #CMD [ "--non-interactive-mode" ]

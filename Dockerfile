@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1.3
 
-ARG RUST_VERSION=1.66
+ARG RUST_VERSION=1.67
 
 # rust source compile
 FROM --platform=$BUILDPLATFORM rust:$RUST_VERSION-bullseye as builder
@@ -41,8 +41,8 @@ RUN groupadd --gid 1000 gh-pilot && \
     useradd --create-home --no-log-init \
       --uid 1000 --gid 1000 gh-pilot
 
-COPY --from=builder /tmp/gh-pilot/ghp /usr/local/bin/ghp-client
 COPY --from=builder /tmp/gh-pilot/ghp-server /usr/local/bin/ghp-server
+COPY --from=builder /tmp/gh-pilot/ghp /usr/local/bin/ghp-client
 
 ENTRYPOINT [ "ghp-server" ]
 #CMD [ "--non-interactive-mode" ]
