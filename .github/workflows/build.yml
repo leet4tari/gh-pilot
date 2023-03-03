@@ -42,8 +42,8 @@ jobs:
         id: envs_setup
         shell: bash
         run: |
-          SREPOSITORY=${{ env.SREPOSITORY_FROM_REPO }}
-          echo "SREPOSITORY=${SREPOSITORY:-${{ env.SREPOSITORY_DEFAULT }}}" >> $GITHUB_OUTPUT
+          SREPOSITORY=${{ vars.SREPOSITORY_FROM_REPO }}
+          echo "SREPOSITORY=${SREPOSITORY:-${{ env.SREPOSITORY_DEFAULT }}}" >> $GITHUB_ENV
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
