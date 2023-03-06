@@ -37,8 +37,11 @@ ARG VERSION
 ENV dockerfile_version=$VERSION
 ENV dockerfile_build_arch=$BUILDPLATFORM
 
-COPY --from=builder /etc/ssl/certs/ /etc/ssl/certs/
-COPY --from=builder /usr/share/ca-certificates /usr/share/ca-certificates
+RUN apt-get update && \
+    apt-get --no-install-recommends install -y \
+      apt-transport-https \
+      ca-certificates \
+      openssl
 
 RUN groupadd --gid 10001 gh-pilot && \
     useradd --create-home --no-log-init \
