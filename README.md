@@ -45,6 +45,8 @@ Github pilot is far more flexible and easier to manage than Github Actions.
 * Trigger github actions based on fine-grained event predicates,
 * and much more
 
+Remember to match your ```webhooks``` to your ingress ending in  ```/github/webhook```, ie: ```https://gh-pilot-webhook.example.com/github/webhook```
+
 # Github pilot CLI
 
 The CLI tool is a handy partner client app to Github pilot. You can use it to do many of the things you do in the 
