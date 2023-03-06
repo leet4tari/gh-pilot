@@ -37,6 +37,9 @@ ARG VERSION
 ENV dockerfile_version=$VERSION
 ENV dockerfile_build_arch=$BUILDPLATFORM
 
+# Disable Prompt During Packages Installation
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update && \
     apt-get --no-install-recommends install -y \
       apt-transport-https \

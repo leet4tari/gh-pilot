@@ -14,5 +14,5 @@ target
 *.code-workspace
 tags
 
-# Ignore OS files
+# Ignore OSX files
 .DS_Store
